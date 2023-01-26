@@ -13,6 +13,8 @@ def _results(s: str) -> Set[str]:
 def test_trivial_case():
     assert _results("") == set()
 
+
+def test_error_cases():
     assert _results("test = True") == set({"1: 0 NDV100 variable 'test' must be false"})
     assert _results("debug = True") == set(
         {"1: 0 NDV100 variable 'debug' must be false"}
@@ -35,6 +37,8 @@ def test_trivial_case():
         {"2: 20 NDV100 variable 'DEBUG' must be false"}
     )
 
+
+def test_ok_cases():
     assert _results("test = False") == set()
     assert _results("debug = False") == set()
     assert _results("TEST = False") == set()

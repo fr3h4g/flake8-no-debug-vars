@@ -7,7 +7,6 @@ if sys.version_info < (3, 8):
 else:
     import importlib.metadata as importlib_metadata
 
-MSG = "NDV100 variable 'debug' or 'false' must be false"
 
 VARS = ["DEBUG", "TEST"]
 
