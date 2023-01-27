@@ -21,7 +21,11 @@ class Visitor(ast.NodeVisitor):
                 if isinstance(target, ast.Name):
                     if hasattr(target, "id"):
                         if str(target.id).upper() in VARS:
-                            if node.value.value:
+                            if hasattr(node.value, "value") and node.value.value:
+                                self.problems.append(
+                                    (node.lineno, node.col_offset, target.id)
+                                )
+                            if hasattr(node.value, "n") and node.value.n:
                                 self.problems.append(
                                     (node.lineno, node.col_offset, target.id)
                                 )
@@ -29,6 +33,29 @@ class Visitor(ast.NodeVisitor):
                     if hasattr(target, "attr"):
                         if str(target.attr).upper() in VARS:
                             if node.value.value:
+                                self.problems.append(
+                                    (node.lineno, node.col_offset, target.attr)
+                                )
+        elif isinstance(node.value, ast.NameConstant):
+            for target in node.targets:
+                if hasattr(target, "id"):
+                    if str(target.id).upper() in VARS:
+                        if node.value.value:
+                            self.problems.append(
+                                (node.lineno, node.col_offset, target.id)
+                            )
+        elif isinstance(node.value, ast.Num):
+            for target in node.targets:
+                if hasattr(target, "id"):
+                    if str(target.id).upper() in VARS:
+                        if node.value.n:
+                            self.problems.append(
+                                (node.lineno, node.col_offset, target.id)
+                            )
+                if isinstance(target, ast.Attribute):
+                    if hasattr(target, "attr"):
+                        if str(target.attr).upper() in VARS:
+                            if node.value.n:
                                 self.problems.append(
                                     (node.lineno, node.col_offset, target.attr)
                                 )
